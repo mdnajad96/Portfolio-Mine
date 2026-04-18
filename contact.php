@@ -15,7 +15,11 @@ if (isset($_POST["submit"])) {
     $headers = "From: Portfolio Website <no-reply@localhost>\r\n";
     $headers .= "Reply-To: $email\r\n";
 
-    mail($to, $subject, $body, $headers);
+    if (!mail($to, $subject, $body, $headers)) {
+        header("Location: contact.html?error=1");
+        exit;
+    }
+
     header("Location: thank-you.html");
     exit;
 }
