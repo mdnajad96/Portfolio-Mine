@@ -1,19 +1,22 @@
 <?php
-	if (isset($_POST["submit"])) {
-		$name = $_POST['name'];
-		$email = $_POST['email'];
-		$message = $_POST['message'];
-		$from = 'Matias Contact Form'; 
-		$to = 'themeocean91@gmail.com'; 
-		$subject = $_POST['subject']; 
-		
-		$body = "From: $name\n E-Mail: $email\n Subject: $subject\n Message:\n $message";
-	
+if (isset($_POST["submit"])) {
+    $name = isset($_POST['name']) ? trim(strip_tags($_POST['name'])) : '';
+    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $message = isset($_POST['message']) ? trim(strip_tags($_POST['message'])) : '';
+    $subject = 'Portfolio Contact Form Message';
 
-	mail($to, $subject, $body, $from) or die("Error!");
+    if ($name === '' || $message === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        header("Location: contact.html");
+        exit;
+    }
 
-	header("location: thank-you.html");
-	
-	}
-	
+    $to = 'muhammad.munajad96@gmail.com';
+    $body = "From: $name\nE-Mail: $email\nSubject: $subject\nMessage:\n$message";
+    $headers = "From: Portfolio Website <no-reply@localhost>\r\n";
+    $headers .= "Reply-To: $email\r\n";
+
+    mail($to, $subject, $body, $headers);
+    header("Location: thank-you.html");
+    exit;
+}
 ?>
